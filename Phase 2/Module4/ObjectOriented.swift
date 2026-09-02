@@ -144,6 +144,7 @@ class BankAccount {
         balance += amount
     }
     
+    @discardableResult  //decorator, flag for compiler
     func withdraw(amount: Double) -> Bool {
         guard amount > 0, amount <= balance else {
             return false
