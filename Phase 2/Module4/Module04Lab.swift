@@ -496,12 +496,12 @@ struct AccountAnalytics: AnalyticsProvider{
 // The function must work for any type conforming to Summarizable —
 // including both Transaction and BankAccount.
 func reportResults<T: Summarizable>(_ items: [T], title: String){
-    print("================================ \(title) ================================")
+    print("\n================================ \(title) ================================\n")
     print("\(items.count) items")
     for i in items {
         i.printSummary()
     }
-    print("================================ End of \(title) ================================")
+    print("\n================================ End of \(title) ================================\n")
 }
 
 
@@ -525,13 +525,15 @@ func runlabDemo(){
 
     reportResults(transactions, title: "Transaction Summary")
 
-    print("TRANSACTION RESULTS IN CHECKING")
+    print("\n== Transaction results for checking account1 ==\n")
     for t in transactions {
         account1.addTransaction(t)
         account1.printSummary()
     }
 
     //7C
+
+    print("\n== Error Handling ==\n")
 
     do {
         try account1.withdraw(amount: 3_000.00)
@@ -568,7 +570,7 @@ func runlabDemo(){
 
 
      //7D
-     print("Account Analytics")
+     print("\n== Account Analytics ==\n")
      let accountAnalytics = AccountAnalytics(transactions: account1.transactions)
      print("Total credits: \(accountAnalytics.totalCredits)")
      print("Total debits: \(accountAnalytics.totalDebits)")
@@ -581,6 +583,7 @@ func runlabDemo(){
     reportResults([account1, account2], title: "All Accounts")
 
     //7F
+    print("\n== Value vs. Reference semantics ==\n")
     //value type
     let transactionTest = Transaction(date: Date(), amount: 500.00, description: "to Marnie", type: TransactionType.transfer)
     var newTransactionVar = transactionTest
@@ -592,7 +595,7 @@ func runlabDemo(){
     let accountTest = account1
     do {
         try accountTest.deposit(amount: 100.00)
-        print(accountTest.balance)
+        print(account1.balance)
         print(accountTest.balance)
     } catch let e as AccountOperationsError {
         print(e.localizedDescription)
