@@ -23,15 +23,10 @@
 // fill in the TODOs in the scaffolding beneath it.
 //
 
-import TransferUiState
 import android.app.Activity
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pnc.jetpackcomposedemos.core.presentation.LoadableState
-import com.pnc.jetpackcomposedemos.features.artists.domain.Artist
-import com.pnc.jetpackcomposedemos.features.artists.domain.ArtistRepository
-import com.pnc.jetpackcomposedemos.features.artists.presentation.state.ArtistDirectoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -100,7 +95,7 @@ class TransferFundsUseCase @Inject constructor(
     // first, then call the repository if eligible.
     suspend operator fun invoke(from: Account, to: Account, amount: Double): Result<Unit> {
         if (!transferEligibilityService.canTransfer(amount, from)) {
-           return Result.failure(IllegalArgumentException("Invalid Amount or Insufficient Funds"))
+            return Result.failure(IllegalArgumentException("Invalid Amount or Insufficient Funds"))
         }
 
         val success = accountsRepository.transfer(from, to, amount)
@@ -124,7 +119,7 @@ sealed class TransferUiState {
 @HiltViewModel
 class TransferViewModel @Inject constructor(
     private val transferFunds: TransferFundsUseCase
-): ViewModel() {
+) : ViewModel() {
     // TODO: no Android framework import anywhere in this file below this
     // point, other than androidx.lifecycle. Annotate the class with
     // @HiltViewModel and inject TransferFundsUseCase via an @Inject
@@ -135,7 +130,7 @@ class TransferViewModel @Inject constructor(
 
     val uiState: StateFlow<TransferUiState> = _uiState.asStateFlow()
 
-    fun attemptTransfer(amount: Double, from: Account, to: Account){
+    fun attemptTransfer(amount: Double, from: Account, to: Account) {
         viewModelScope.launch {
             val transfer = transferFunds(from = from, to = to, amount = amount)
             if (transfer.isSuccess) {
